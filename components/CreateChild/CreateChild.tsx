@@ -115,7 +115,7 @@ export function CreateChild({}: CreateChildProps) {
               })
             }
           >
-            Створити
+            Створити картку учня
           </Button>
         </Stack>
         <Stack
