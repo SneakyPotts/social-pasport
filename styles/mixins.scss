@@ -1,0 +1,18 @@
+$desktop: 1366px;
+$laptop: 1024px;
+$tablet: 991px;
+$mobile: 535px;
+
+@mixin hoverAction() {
+  @media screen and (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+@mixin adaptive($breakpoint) {
+  @media screen and (max-width: $breakpoint) {
+    @content;
+  }
+}
