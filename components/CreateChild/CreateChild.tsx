@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { type FormEventHandler } from 'react'
 
 import { Button, Checkbox, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, InputGroup, InputLeftAddon, Stack, Textarea, useToast } from '@chakra-ui/react'
 
@@ -9,6 +9,39 @@ import type { CreateChildProps } from './CreateChild.props'
 
 export function CreateChild({}: CreateChildProps) {
   const toast = useToast()
+
+  // toast({
+  //   title: `"Основна інформація" успішно збережена`,
+  //   status: 'success',
+  //   isClosable: true,
+  // })
+
+  const handleCreate: FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault()
+
+    const form = event.target as HTMLFormElement
+    const formData = new FormData(form)
+    const data = Object.fromEntries(formData)
+
+    try {
+      const response = await fetch('/api/child', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      if (!response.ok) {
+        throw new Error('Response is not OK')
+      }
+
+      const responseData = await response.json()
+
+      console.log(responseData)
+    } catch (error) {
+      console.error('Error:', error)
+      // Обробіть помилку тут
+    }
+  }
 
   return (
     <>
@@ -20,7 +53,10 @@ export function CreateChild({}: CreateChildProps) {
       >
         Створення картки учня
       </Heading>
-      <form className={s.create}>
+      <form
+        className={s.create}
+        onSubmit={handleCreate}
+      >
         <Stack
           p="1rem"
           shadow="lg"
@@ -40,6 +76,7 @@ export function CreateChild({}: CreateChildProps) {
             >
               <FormLabel mb="0.25rem">ПІБ дитини</FormLabel>
               <Input
+                name="name"
                 placeholder="П'яточкін Петро Петрович"
                 size="md"
               />
@@ -51,6 +88,7 @@ export function CreateChild({}: CreateChildProps) {
             >
               <FormLabel mb="0.25rem">Дата народження</FormLabel>
               <Input
+                name="born"
                 placeholder="Оберіть дату народження"
                 size="md"
                 type="date"
@@ -63,6 +101,7 @@ export function CreateChild({}: CreateChildProps) {
             >
               <FormLabel mb="0.25rem">Домашня адресса</FormLabel>
               <Input
+                name="address"
                 placeholder="вул.Чарівна 2/71"
                 size="md"
               />
@@ -78,6 +117,7 @@ export function CreateChild({}: CreateChildProps) {
                 <InputLeftAddon>+38</InputLeftAddon>
                 <Input
                   type="tel"
+                  name="phone"
                   placeholder="0978886655"
                 />
               </InputGroup>
@@ -85,12 +125,18 @@ export function CreateChild({}: CreateChildProps) {
             </FormControl>
             <FormControl flex={1}>
               <FormLabel mb="0.25rem">ПІБ батька</FormLabel>
-              <Input placeholder="П'яточкін Петро Петрович" />
+              <Input
+                name="father"
+                placeholder="П'яточкін Петро Петрович"
+              />
               <FormHelperText mt="0.25rem">Введіть повне ім&apos;я батька</FormHelperText>
             </FormControl>
             <FormControl flex={1}>
               <FormLabel mb="0.25rem">ПІБ матері</FormLabel>
-              <Input placeholder="П'яточкіна Петрина Петрівна" />
+              <Input
+                name="mother"
+                placeholder="П'яточкіна Петрина Петрівна"
+              />
               <FormHelperText mt="0.25rem">Введіть повне ім&apos;я матері</FormHelperText>
             </FormControl>
           </HStack>
@@ -98,6 +144,7 @@ export function CreateChild({}: CreateChildProps) {
           <FormControl flex={1}>
             <FormLabel mb="0.25rem">Примітка</FormLabel>
             <Textarea
+              name="description"
               placeholder="Текст примітки..."
               size="md"
             />
@@ -107,195 +154,189 @@ export function CreateChild({}: CreateChildProps) {
           <Button
             colorScheme="green"
             mt="0.5rem"
-            onClick={() =>
-              toast({
-                title: `"Основна інформація" успішно збережена`,
-                status: 'success',
-                isClosable: true,
-              })
-            }
+            type="submit"
           >
             Створити картку учня
           </Button>
         </Stack>
-        <Stack
-          p="1rem"
-          shadow="lg"
-        >
-          <Heading
-            as="h2"
-            size="lg"
-            noOfLines={1}
-            mb="0.5rem"
-          >
-            Види позанавчальної діяльності
-          </Heading>
-          <HStack>
-            <Checkbox
-              flex={1}
-              colorScheme="blue"
-              size="lg"
-            >
-              Музична школа
-            </Checkbox>
-            <Checkbox
-              flex={1}
-              colorScheme="blue"
-              size="lg"
-            >
-              Музична школа
-            </Checkbox>
-            <Checkbox
-              flex={1}
-              colorScheme="blue"
-              size="lg"
-            >
-              Музична школа
-            </Checkbox>
-            <Checkbox
-              flex={1}
-              colorScheme="blue"
-              size="lg"
-            >
-              Музична школа
-            </Checkbox>
-          </HStack>
-          <Button
-            colorScheme="blue"
-            mt="0.5rem"
-            onClick={() =>
-              toast({
-                title: `"Види позанавчальної діяльності" успішно збережені`,
-                status: 'success',
-                isClosable: true,
-              })
-            }
-          >
-            Зберегти
-          </Button>
-        </Stack>
-        <Stack
-          p="1rem"
-          shadow="lg"
-        >
-          <Heading
-            as="h2"
-            size="lg"
-            noOfLines={1}
-            mb="0.5rem"
-          >
-            Соціальна поведінка учнів
-          </Heading>
-          <HStack>
-            <Checkbox
-              flex={1}
-              colorScheme="orange"
-              size="lg"
-            >
-              Девіантна поведінка
-            </Checkbox>
-            <Checkbox
-              flex={1}
-              colorScheme="orange"
-              size="lg"
-            >
-              Систематично порушує дисципліну на уроках, конфлікти з вчителями, інші порушення під час освітнього процесу
-            </Checkbox>
-            <Checkbox
-              flex={1}
-              colorScheme="orange"
-              size="lg"
-            >
-              Схильний (-на) до систематичних пропусків уроків
-            </Checkbox>
-          </HStack>
-          <HStack>
-            <Checkbox
-              flex={1}
-              colorScheme="orange"
-              size="lg"
-            >
-              Група ризику (<i>тютюнопаління, вживання алкоголю, психотропні речовини, схильність до бродяжництво, інше</i>)
-            </Checkbox>
-            <Checkbox
-              flex={1}
-              colorScheme="orange"
-              size="lg"
-            >
-              Стоїть на обліку в кримінальній поліції або наркокабінеті
-            </Checkbox>
-            <Checkbox
-              flex={1}
-              colorScheme="orange"
-              size="lg"
-            >
-              Потребує корекції поведінки
-            </Checkbox>
-          </HStack>
-          <Button
-            colorScheme="orange"
-            mt="0.5rem"
-            onClick={() =>
-              toast({
-                title: `Дані "Соціальна поведінка учнів" успішно збережені`,
-                status: 'success',
-                isClosable: true,
-              })
-            }
-          >
-            Зберегти
-          </Button>
-        </Stack>
-        <Stack
-          p="1rem"
-          shadow="lg"
-        >
-          <Heading
-            as="h2"
-            size="lg"
-            noOfLines={1}
-            mb="0.5rem"
-          >
-            Інформація про соціальне середовище розвитку учнів
-          </Heading>
-          <HStack>
-            <Checkbox
-              flex={1}
-              colorScheme="teal"
-              size="lg"
-              defaultChecked
-            >
-              Повна сім&apos;я
-            </Checkbox>
-            <Checkbox
-              flex={1}
-              colorScheme="teal"
-              size="lg"
-            >
-              Неповна сім&apos;я - виховує мати/бабуся
-            </Checkbox>
-            <Checkbox
-              flex={1}
-              colorScheme="teal"
-              size="lg"
-            >
-              Неповна сім&apos;я - виховує батько/дідусь
-            </Checkbox>
-          </HStack>
-          <Button
-            colorScheme="teal"
-            mt="0.5rem"
-            onClick={() =>
-              toast({
-                title: `Дані "Соціальна поведінка учнів" успішно збережені`,
-                status: 'success',
-                isClosable: true,
-              })
-            }
-          >
-            Зберегти
-          </Button>
-        </Stack>
+        {/*<Stack*/}
+        {/*  p="1rem"*/}
+        {/*  shadow="lg"*/}
+        {/*>*/}
+        {/*  <Heading*/}
+        {/*    as="h2"*/}
+        {/*    size="lg"*/}
+        {/*    noOfLines={1}*/}
+        {/*    mb="0.5rem"*/}
+        {/*  >*/}
+        {/*    Види позанавчальної діяльності*/}
+        {/*  </Heading>*/}
+        {/*  <HStack>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="blue"*/}
+        {/*      size="lg"*/}
+        {/*    >*/}
+        {/*      Музична школа*/}
+        {/*    </Checkbox>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="blue"*/}
+        {/*      size="lg"*/}
+        {/*    >*/}
+        {/*      Музична школа*/}
+        {/*    </Checkbox>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="blue"*/}
+        {/*      size="lg"*/}
+        {/*    >*/}
+        {/*      Музична школа*/}
+        {/*    </Checkbox>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="blue"*/}
+        {/*      size="lg"*/}
+        {/*    >*/}
+        {/*      Музична школа*/}
+        {/*    </Checkbox>*/}
+        {/*  </HStack>*/}
+        {/*  <Button*/}
+        {/*    colorScheme="blue"*/}
+        {/*    mt="0.5rem"*/}
+        {/*    onClick={() =>*/}
+        {/*      toast({*/}
+        {/*        title: `"Види позанавчальної діяльності" успішно збережені`,*/}
+        {/*        status: 'success',*/}
+        {/*        isClosable: true,*/}
+        {/*      })*/}
+        {/*    }*/}
+        {/*  >*/}
+        {/*    Зберегти*/}
+        {/*  </Button>*/}
+        {/*</Stack>*/}
+        {/*<Stack*/}
+        {/*  p="1rem"*/}
+        {/*  shadow="lg"*/}
+        {/*>*/}
+        {/*  <Heading*/}
+        {/*    as="h2"*/}
+        {/*    size="lg"*/}
+        {/*    noOfLines={1}*/}
+        {/*    mb="0.5rem"*/}
+        {/*  >*/}
+        {/*    Соціальна поведінка учнів*/}
+        {/*  </Heading>*/}
+        {/*  <HStack>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="orange"*/}
+        {/*      size="lg"*/}
+        {/*    >*/}
+        {/*      Девіантна поведінка*/}
+        {/*    </Checkbox>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="orange"*/}
+        {/*      size="lg"*/}
+        {/*    >*/}
+        {/*      Систематично порушує дисципліну на уроках, конфлікти з вчителями, інші порушення під час освітнього процесу*/}
+        {/*    </Checkbox>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="orange"*/}
+        {/*      size="lg"*/}
+        {/*    >*/}
+        {/*      Схильний (-на) до систематичних пропусків уроків*/}
+        {/*    </Checkbox>*/}
+        {/*  </HStack>*/}
+        {/*  <HStack>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="orange"*/}
+        {/*      size="lg"*/}
+        {/*    >*/}
+        {/*      Група ризику (<i>тютюнопаління, вживання алкоголю, психотропні речовини, схильність до бродяжництво, інше</i>)*/}
+        {/*    </Checkbox>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="orange"*/}
+        {/*      size="lg"*/}
+        {/*    >*/}
+        {/*      Стоїть на обліку в кримінальній поліції або наркокабінеті*/}
+        {/*    </Checkbox>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="orange"*/}
+        {/*      size="lg"*/}
+        {/*    >*/}
+        {/*      Потребує корекції поведінки*/}
+        {/*    </Checkbox>*/}
+        {/*  </HStack>*/}
+        {/*  <Button*/}
+        {/*    colorScheme="orange"*/}
+        {/*    mt="0.5rem"*/}
+        {/*    onClick={() =>*/}
+        {/*      toast({*/}
+        {/*        title: `Дані "Соціальна поведінка учнів" успішно збережені`,*/}
+        {/*        status: 'success',*/}
+        {/*        isClosable: true,*/}
+        {/*      })*/}
+        {/*    }*/}
+        {/*  >*/}
+        {/*    Зберегти*/}
+        {/*  </Button>*/}
+        {/*</Stack>*/}
+        {/*<Stack*/}
+        {/*  p="1rem"*/}
+        {/*  shadow="lg"*/}
+        {/*>*/}
+        {/*  <Heading*/}
+        {/*    as="h2"*/}
+        {/*    size="lg"*/}
+        {/*    noOfLines={1}*/}
+        {/*    mb="0.5rem"*/}
+        {/*  >*/}
+        {/*    Інформація про соціальне середовище розвитку учнів*/}
+        {/*  </Heading>*/}
+        {/*  <HStack>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="teal"*/}
+        {/*      size="lg"*/}
+        {/*      defaultChecked*/}
+        {/*    >*/}
+        {/*      Повна сім&apos;я*/}
+        {/*    </Checkbox>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="teal"*/}
+        {/*      size="lg"*/}
+        {/*    >*/}
+        {/*      Неповна сім&apos;я - виховує мати/бабуся*/}
+        {/*    </Checkbox>*/}
+        {/*    <Checkbox*/}
+        {/*      flex={1}*/}
+        {/*      colorScheme="teal"*/}
+        {/*      size="lg"*/}
+        {/*    >*/}
+        {/*      Неповна сім&apos;я - виховує батько/дідусь*/}
+        {/*    </Checkbox>*/}
+        {/*  </HStack>*/}
+        {/*  <Button*/}
+        {/*    colorScheme="teal"*/}
+        {/*    mt="0.5rem"*/}
+        {/*    onClick={() =>*/}
+        {/*      toast({*/}
+        {/*        title: `Дані "Соціальна поведінка учнів" успішно збережені`,*/}
+        {/*        status: 'success',*/}
+        {/*        isClosable: true,*/}
+        {/*      })*/}
+        {/*    }*/}
+        {/*  >*/}
+        {/*    Зберегти*/}
+        {/*  </Button>*/}
+        {/*</Stack>*/}
       </form>
     </>
   )
