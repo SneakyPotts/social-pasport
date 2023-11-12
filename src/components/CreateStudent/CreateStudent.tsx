@@ -1,34 +1,34 @@
 'use client'
 
-import React, {type FormEventHandler} from 'react';
+import React from 'react';
 import type {CreateStudentProps} from "./CreateStudent.props";
 import {Button, FormControl, FormHelperText, FormLabel, Heading, HStack, Input, InputGroup, InputLeftAddon, Stack, Textarea, useToast} from "@chakra-ui/react";
 import {createStudentAction} from "@/actions/student";
+import {useForm} from "react-hook-form";
 
 export function CreateStudent({...props}:CreateStudentProps) {
   const toast = useToast()
 
-  const handleFormSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-    event.preventDefault();
+  const { handleSubmit, register, reset } = useForm<any>();
 
-    try {
-      await createStudentAction(new FormData(event.currentTarget))
-
+  const handleFormSubmit = (data: any) => {
+    createStudentAction(data).then(() => {
       toast({
         title: 'Створення учня пройшло успішно',
         status: 'success',
         isClosable: true
       })
 
-    } catch (error) {
-      console.error(error);
+      reset();
+    }).catch(err => {
+      console.log('Error', err)
 
       toast({
         title: 'Щось пішло не так...',
         status: 'error',
         isClosable: true
       })
-    }
+    })
   }
 
   return (
@@ -42,8 +42,7 @@ export function CreateStudent({...props}:CreateStudentProps) {
         Створення картки учня
       </Heading>
       <form
-        // action={createStudentAction}
-        onSubmit={handleFormSubmit}
+        onSubmit={handleSubmit(handleFormSubmit)}
       >
         <Stack
           p="1rem"
@@ -64,7 +63,7 @@ export function CreateStudent({...props}:CreateStudentProps) {
             >
               <FormLabel mb="0.25rem">ПІБ дитини</FormLabel>
               <Input
-                name="name"
+                {...register("name")}
                 placeholder="П'яточкін Петро Петрович"
                 size="md"
               />
@@ -76,7 +75,7 @@ export function CreateStudent({...props}:CreateStudentProps) {
             >
               <FormLabel mb="0.25rem">Дата народження</FormLabel>
               <Input
-                name="born"
+                {...register("born")}
                 placeholder="Оберіть дату народження"
                 size="md"
                 type="date"
@@ -89,7 +88,7 @@ export function CreateStudent({...props}:CreateStudentProps) {
             >
               <FormLabel mb="0.25rem">Домашня адресса</FormLabel>
               <Input
-                name="address"
+                {...register("address")}
                 placeholder="вул.Чарівна 2/71"
                 size="md"
               />
@@ -105,7 +104,7 @@ export function CreateStudent({...props}:CreateStudentProps) {
                 <InputLeftAddon>+38</InputLeftAddon>
                 <Input
                   type="tel"
-                  name="phone"
+                  {...register("phone")}
                   placeholder="0978886655"
                 />
               </InputGroup>
@@ -114,7 +113,7 @@ export function CreateStudent({...props}:CreateStudentProps) {
             <FormControl flex={1}>
               <FormLabel mb="0.25rem">ПІБ батька</FormLabel>
               <Input
-                name="fatherName"
+                {...register("fatherName")}
                 placeholder="П'яточкін Петро Петрович"
               />
               <FormHelperText mt="0.25rem">Введіть повне ім&apos;я батька</FormHelperText>
@@ -122,7 +121,7 @@ export function CreateStudent({...props}:CreateStudentProps) {
             <FormControl flex={1}>
               <FormLabel mb="0.25rem">ПІБ матері</FormLabel>
               <Input
-                name="motherName"
+                {...register("motherName")}
                 placeholder="П'яточкіна Петрина Петрівна"
               />
               <FormHelperText mt="0.25rem">Введіть повне ім&apos;я матері</FormHelperText>
@@ -132,7 +131,7 @@ export function CreateStudent({...props}:CreateStudentProps) {
           <FormControl flex={1}>
             <FormLabel mb="0.25rem">Примітка</FormLabel>
             <Textarea
-              name="description"
+              {...register("description")}
               placeholder="Текст примітки..."
               size="md"
             />
