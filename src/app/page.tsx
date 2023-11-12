@@ -2,13 +2,14 @@ import '@/styles/styles.scss';
 
 import {CreateStudent} from "@/components/CreateStudent";
 // import prisma from "@/prisma";
-const prisma = await getClient()
 
 import moment from "moment";
 import {DeleteButton} from "@UI/DeleteButton";
 import {getClient} from "@/prisma";
 
 export default async function Home() {
+  const prisma = await getClient()
+
   const students = await prisma.student.findMany({
     orderBy: {
       name: 'asc'
