@@ -1,9 +1,13 @@
 'use server'
 
-import prisma from "@/prisma";
+// import prisma from "@/prisma";
 import {revalidatePath} from "next/cache";
+import {getClient} from "@/prisma";
+
 
 export async function createStudentAction(data: FormData) {
+  const prisma = await getClient()
+
   const name = data.get('name')
   const born = data.get('born')
   const phone = data.get('phone')
@@ -32,6 +36,8 @@ export async function createStudentAction(data: FormData) {
 }
 
 export async function removeStudentAction(id: number) {
+  const prisma = await getClient()
+
   if (!id) {
     throw new Error('Error deleteStudentAction, required ID')
   }

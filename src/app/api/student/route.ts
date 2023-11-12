@@ -1,11 +1,12 @@
 import type { NextApiResponse } from 'next'
-import prisma from "@/prisma";
+import {getClient} from "@/prisma";
+// import prisma from "@/prisma";
 
 export const POST = async (
   req: Request,
   res: NextApiResponse,
 ) => {
-  // const studentData = req.body;
+  const prisma = await getClient()
 
   const data = await req.formData()
 
