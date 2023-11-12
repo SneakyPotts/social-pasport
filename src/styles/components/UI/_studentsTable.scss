@@ -1,0 +1,33 @@
+.table {
+  display: flex;
+  flex-direction: column;
+
+  padding: 16px 0;
+  margin-top: 24px;
+
+  &Row {
+    display: flex;
+    align-items: center;
+
+    padding: 16px;
+
+    border-bottom: 1px solid #d1d1d1;
+
+    &.head {
+      font-weight: 700;
+
+      border-top: 1px solid #d1d1d1;
+      background-color: #f6f6f6;
+    }
+  }
+
+  &Cell {
+    &:not(.delete) {
+      flex: 1;
+    }
+
+    &.delete {
+      width: 40px;
+    }
+  }
+}
