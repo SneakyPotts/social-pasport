@@ -11,10 +11,10 @@
         "style": "templates/default/TemplateName.module.scss",
         "props": "templates/default/TemplateName.props.ts"
       },
-      "path": "components",
+      "path": "src/components",
       "withLazy": false,
       "withStory": false,
-      "withStyle": true,
+      "withStyle": false,
       "withTest": false,
       "withIndex": true,
       "withProps": true

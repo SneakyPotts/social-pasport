@@ -1,41 +1,37 @@
 {
-  "name": "social-pasport",
+  "name": "kg45__next14-prisma",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx . --color",
-    "format": "prettier --write ./**/*.{js,jsx,ts,tsx,scss,css,json}",
-    "ready": "npm run format && npm run lint:fix",
     "create": "generate-react component"
   },
   "dependencies": {
-    "@chakra-ui/next-js": "^2.1.5",
-    "@chakra-ui/react": "^2.8.0",
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/next-js": "^2.2.0",
+    "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@types/node": "20.5.7",
-    "@types/react": "18.2.21",
-    "@types/react-dom": "18.2.7",
+    "@prisma/client": "^5.5.2",
     "classnames": "^2.3.2",
-    "eslint": "8.48.0",
-    "eslint-config-next": "13.4.19",
-    "framer-motion": "^10.16.1",
-    "next": "13.4.19",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "sass": "^1.66.1",
-    "typescript": "5.2.2"
+    "framer-motion": "^10.16.4",
+    "generate-react-cli": "^8.3.0",
+    "moment": "^2.29.4",
+    "next": "14.0.2",
+    "react": "^18",
+    "react-dom": "^18",
+    "sass": "^1.69.5"
   },
   "devDependencies": {
-    "@svgr/webpack": "^8.1.0",
-    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "generate-react-cli": "^8.3.0",
-    "prettier": "^3.0.3"
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.2",
+    "prisma": "^5.5.2",
+    "typescript": "^5"
   }
 }
