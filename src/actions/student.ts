@@ -4,29 +4,20 @@
 import {revalidatePath} from "next/cache";
 import {getClient} from "@/prisma";
 
+interface Student {
+  name: string
+  born: string
+  address?: string
+  phone: string
+  fatherName?: string
+  motherName?: string
+  description?: string
+}
 
-export async function createStudentAction(data: FormData) {
+export async function createStudentAction(data: Student) {
   const prisma = await getClient()
 
-  const name = data.get('name')
-  const born = data.get('born')
-  const phone = data.get('phone')
-
-  if (!name || !born || !phone) {
-    throw new Error('Error createStudentAction, empty required fields')
-  }
-
-  const reqData = {
-    name: name.toString(),
-    born: new Date(born.toString()),
-    address: data.get('address')?.toString(),
-    phone: phone.toString(),
-    fatherName: data.get('fatherName')?.toString(),
-    motherName: data.get('motherName')?.toString(),
-    description: data.get('description')?.toString(),
-  }
-
-  console.log('reqData',reqData)
+  const reqData = {...data, born: new Date(data.born.toString())}
 
   await prisma.student.create({
     data: reqData
