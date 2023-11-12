@@ -1,5 +1,8 @@
 import type { NextApiResponse } from 'next'
-import prisma from "@/prisma";
+import {getClient} from "@/prisma";
+// import prisma from "@/prisma";
+
+const prisma = await getClient()
 
 export const POST = async (
   req: Request,

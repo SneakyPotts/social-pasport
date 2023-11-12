@@ -1,7 +1,10 @@
 'use server'
 
-import prisma from "@/prisma";
+// import prisma from "@/prisma";
 import {revalidatePath} from "next/cache";
+import {getClient} from "@/prisma";
+
+const prisma = await getClient()
 
 export async function createStudentAction(data: FormData) {
   const name = data.get('name')
